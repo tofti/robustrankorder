@@ -1,20 +1,33 @@
-package main;
+package com.tofti;
+
+import java.util.Arrays;
 
 public class RRO {
-    private static double rro(double[] X, double[] Y) {
+    static class RROResult {
+        public final int m;
+        public final int n;
+        public final double uyxMean;
+        public final double uxyMean;
+        public final double vx;
+        public final double vy;
+        public final double u;
+        public RROResult(int m, int n, double uyxMean, double uxyMean, double vx, double vy, double u) {
+            this.m = m;
+            this.n = n;
+            this.uyxMean = uyxMean;
+            this.uxyMean = uxyMean;
+            this.vx = vx;
+            this.vy = vy;
+            this.u = u;
+        }
+    }
+    public static RROResult rro(double[] X, double[] Y) {
         final int m = X.length;
         final int n = Y.length;
-
-        System.out.println("m=" + m);
-        System.out.println("n=" + n);
-
 
         // sort X and Y
         Arrays.sort(X);
         Arrays.sort(Y);
-
-        printDoubleArr("X",X);
-        printDoubleArr("Y",Y);
 
         // position values of x_i in Y
         double[] uyxi = new double[m];
@@ -26,32 +39,23 @@ public class RRO {
         for(int j = 0; j < n; j++)
             uxyj[j] = getRank(Y[j], X);
 
-        printDoubleArr("uyxi",uyxi);
-        printDoubleArr("uxyj",uxyj);
-
-        // determine mean ranks
+         // determine mean ranks
         double uyx_mean = mean(uyxi);
         double uxy_mean = mean(uxyj);
 
-        System.out.println("uyx_mean=" + uyx_mean);
-        System.out.println("uxy_mean=" + uxy_mean);
-
         // variance in uyx ranks
-        double Vx = 0.0;
-        for(int i = 0; i < m; i++)
-            Vx += (uyxi[i] - uyx_mean) * (uyxi[i] - uyx_mean);
+        double vx = 0.0;
+        for(int i = 0; i < n; i++)
+            vx += (uxyj[i] - uxy_mean) * (uxyj[i] - uxy_mean);
 
         // variance in uxy ranks
-        double Vy = 0.0;
-        for(int j = 0; j < n; j++)
-            Vy += (uxyj[j] - uxy_mean) * (uxyj[j] - uxy_mean);
-
-        System.out.println("Vx=" + Vx);
-        System.out.println("Vy=" + Vy);
+        double vy = 0.0;
+        for(int j = 0; j < m; j++)
+            vy += (uyxi[j] - uxy_mean) * (uyxi[j] - uyx_mean);
 
         // compute U
-        double U = (m * uyx_mean - n * uxy_mean) / (2.0 * Math.sqrt(Vx + Vy + uxy_mean * uyx_mean));
-        return U;
+        double u = (m * uyx_mean - n * uxy_mean) / (2.0 * Math.sqrt(vx + vy + uxy_mean * uyx_mean));
+        return new RROResult(m, n,uyx_mean, uxy_mean, vx, vy, u);
     }
 
     // determine the rank of x in Y, given Y is sorted
@@ -83,9 +87,9 @@ public class RRO {
 
     private static double mean(double[] d) {
         double sum = 0.0;
-        for (int i = 0; i < d.length; i++)
+        for (int i = 0; i < d.length; i++) {
             sum += d[i];
+        }
         return sum / d.length;
     }
-
 }
