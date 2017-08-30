@@ -11,15 +11,16 @@ it follows that the variances of ranks of  ![x](https://github.com/tofti/robustr
 
 ![variancerankorder](https://github.com/tofti/robustrankorder/blob/master/images/img11.png "variancerankorder")
 
-Finally the RRO can be computed:
+Finally the RRO can be computed,
 
-![rro](https://github.com/tofti/robustrankorder/blob/master/images/img12.png "rro"). Tables of significant values can be found [here](https://www.researchgate.net/publication/233347962_Critical_Values_for_the_Robust_Rank-Order_Test).
+![rro](https://github.com/tofti/robustrankorder/blob/master/images/img12.png "rro").
 
-This program computes the RRO, and the associated values of  ![uyx](https://github.com/tofti/robustrankorder/blob/master/images/img7.png) and ![uxy](https://github.com/tofti/robustrankorder/blob/master/images/img9.png), and the variances, and the ![rro](https://github.com/tofti/robustrankorder/blob/master/images/img14.png "rro").
+Tables of significant values for ![rro](https://github.com/tofti/robustrankorder/blob/master/images/img14.png "rro") can be found [here](https://www.researchgate.net/publication/233347962_Critical_Values_for_the_Robust_Rank-Order_Test). This program computes RRO, the values of ![uyx](https://github.com/tofti/robustrankorder/blob/master/images/img7.png) & ![uxy](https://github.com/tofti/robustrankorder/blob/master/images/img9.png), the variances, and ![rro](https://github.com/tofti/robustrankorder/blob/master/images/img14.png "rro").
 
-The unit test uses the sample data from the paper, with the worked example in Section 2.2 of Nick's paper:
+The unit test uses the sample data from the paper, 
 
     x = {5.025,6.7,6.725,6.75,7.05,7.25,8.375}
     y = {4.875,5.125,5.225,5.425,5.55,5.75,5.925,6.125}
  
+giving ![rro](https://github.com/tofti/robustrankorder/blob/master/images/img14.png "rro")= 3, and can be checked against the worked example in Section 2.2 of Nick's paper.
  Feel free to contact me with any questions regarding this implementation.
