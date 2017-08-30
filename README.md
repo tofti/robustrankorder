@@ -1,4 +1,25 @@
 # robustrankorder
-A Java implementation of the Robust Rank Order statistical significance test:
+The Robust Rank Order (RRO) is a non-parametric statistical significance test used as an alternative to the more widely known [Wilcoxon-Mann-Whitney](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test) test. The Wilcoxon-Mann-Whitney test makes assumptions about the underlying distributions of samples, namely that they are drawn from distributions with the same second, third (kurtosis), fourth (skewness), and high order moments.
 
-![robustrankorder](https://github.com/tofti/robustrankorder/blob/master/images/img12.png "rboustrankorder")
+In 2003 [Nick Feltovitch](http://users.monash.edu.au/~nfelt/) published [Nonparametric Tests of Differences in Medians: Comparison of the Wilcoxon–Mann–Whitney and Robust Rank-Order Tests](https://link.springer.com/article/10.1023/A:1026273319211) highlighting the weaknesses of the Wilcoxon Mann Whitney test, and presenting the RRO test as an alternative. Nick also published a [table of significant values](https://www.researchgate.net/publication/233347962_Critical_Values_for_the_Robust_Rank-Order_Test) for the RRO test over a large range of sample sizes , thus making the test viable for many practioners. [Dave Cliff](https://en.wikipedia.org/wiki/Dave_Cliff_(computer_scientist)) used the test in his [ZIP60 paper](https://www.researchgate.net/publication/4245749_ZIP60_An_enhanced_variant_of_the_ZIP_trading_algorithm) and has advocated its use in agent based computational economics experiments (Dave was my PhD examiner). I implemented this test and used it during my PhD, so I make the code and an explanation (my interpretation of the test) available here. I corresponded with Nick on the correctness of my implementation using some of his sample data, it appears that my implemenation is valid (the test is very straightforward once understood). 
+
+The basic idea behind the RRO test is that for two samples, each observation has its rank computed against the other sample by counting the number of  observations in the other sample which have lower values than the observation. The arithematic mean and variance of these ranks can be computed for each sample (symmetrically for the two samples). The difference in the mean ranks across samples is scaled by the variance in ranks to compute a score, effectively measuring the difference in mean ranks scaled by sample size and the variance of the ranks. More formally for two samples ![x of size m](https://github.com/tofti/robustrankorder/blob/master/images/img1.png) and ![y of size n](https://github.com/tofti/robustrankorder/blob/master/images/img2.png), for sample ![x](https://github.com/tofti/robustrankorder/blob/master/images/img5.png), each observation ![xi](https://github.com/tofti/robustrankorder/blob/master/images/img4.png) for ![i to m](https://github.com/tofti/robustrankorder/blob/master/images/img3.png) has its rank in ![y](https://github.com/tofti/robustrankorder/blob/master/images/img6.png) denoted ![uxy](https://github.com/tofti/robustrankorder/blob/master/images/img7.png). Similarily ![uyx](https://github.com/tofti/robustrankorder/blob/master/images/img7.png) denotes the rank of observation ![x](https://github.com/tofti/robustrankorder/blob/master/images/img13.png) of ![y](https://github.com/tofti/robustrankorder/blob/master/images/img6.png) for ![y](https://github.com/tofti/robustrankorder/blob/master/images/img8.png) in ![x](https://github.com/tofti/robustrankorder/blob/master/images/img5.png). Thus the mean ranks of observations of ![x](https://github.com/tofti/robustrankorder/blob/master/images/img5.png) in ![y](https://github.com/tofti/robustrankorder/blob/master/images/img6.png), and observation of ![y](https://github.com/tofti/robustrankorder/blob/master/images/img6.png) in ![x](https://github.com/tofti/robustrankorder/blob/master/images/img5.png) are
+
+![meanrankorder](https://github.com/tofti/robustrankorder/blob/master/images/img10.png "meanrankorder")
+
+it follows that the variances of ranks of  ![x](https://github.com/tofti/robustrankorder/blob/master/images/img5.png) in ![y](https://github.com/tofti/robustrankorder/blob/master/images/img8.png), and ![y](https://github.com/tofti/robustrankorder/blob/master/images/img8.png) in ![x](https://github.com/tofti/robustrankorder/blob/master/images/img5.png) are:
+
+![variancerankorder](https://github.com/tofti/robustrankorder/blob/master/images/img11.png "variancerankorder")
+
+Finally the RRO can be computed:
+
+![rro](https://github.com/tofti/robustrankorder/blob/master/images/img12.png "rro"). Tables of significant values can be found [here](https://www.researchgate.net/publication/233347962_Critical_Values_for_the_Robust_Rank-Order_Test).
+
+This program computes the RRO, and the associated values of  ![uyx](https://github.com/tofti/robustrankorder/blob/master/images/img7.png) and ![uxy](https://github.com/tofti/robustrankorder/blob/master/images/img9.png), and the variances, and the ![rro](https://github.com/tofti/robustrankorder/blob/master/images/img14.png "rro").
+
+The unit test uses the sample data from the paper, with the worked example in Section 2.2 of Nick's paper:
+
+    x = {5.025,6.7,6.725,6.75,7.05,7.25,8.375}
+    y = {4.875,5.125,5.225,5.425,5.55,5.75,5.925,6.125}
+ 
+ Feel free to contact me with any questions regarding this implementation.
